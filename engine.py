@@ -23,6 +23,13 @@ class InterviewEngine:
     def __init__(self, model_name="gemini-1.5-flash"):
         self.model = genai.GenerativeModel(model_name)
     
+    def get_available_models(self):
+        try:
+            models = [m.name for m in genai.list_models()]
+            return models
+        except Exception as e:
+            return [f"Error listing models: {str(e)}"]
+
     def generate_question(self, region, topic):
         try:
             prompt = QUESTION_GEN_PROMPT.format(region=region, topic=topic)

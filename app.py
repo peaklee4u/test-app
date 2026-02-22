@@ -32,14 +32,18 @@ with st.sidebar:
         engine = None
 
     st.divider()
-    region = st.selectbox("지원 지역", ["서울", "경기"])
-    topic = st.selectbox("핵심 주제", [
-        "공동체형 인성", 
-        "AI·디지털 리터러시", 
-        "학생 마음건강",
-        "수업 설계 및 교육과정",
-        "생활지도 및 상담"
     ])
+
+    st.divider()
+    with st.expander("🛠️ 디버그 정보"):
+        import google.generativeai as genai_ver
+        st.caption(f"SDK Version: {genai_ver.__version__}")
+        if st.button("사용 가능 모델 확인"):
+            if engine:
+                models = engine.get_available_models()
+                st.write(models)
+            else:
+                st.error("API 키가 설정되지 않았습니다.")
 
     if st.button("새 문항 생성", type="primary"):
         if engine:
