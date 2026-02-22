@@ -20,7 +20,7 @@ if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
 
 class InterviewEngine:
-    def __init__(self, model_name="gemini-2.0-flash"):
+    def __init__(self, model_name="gemini-2.5-flash"):
         self.model = genai.GenerativeModel(model_name)
     
     def get_available_models(self):
