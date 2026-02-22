@@ -43,9 +43,17 @@ with st.sidebar:
 
     if st.button("새 문항 생성", type="primary"):
         if engine:
-            with st.spinner("문제를 생성 중입니다..."):
-                st.session_state.question = engine.generate_question(region, topic)
-                st.session_state.evaluation = None
+            # API 키가 초기값인지 확인
+            if "your_actual_api_key_here" in str(st.secrets.get("GEMINI_API_KEY", "")):
+                st.warning("⚠️ `.streamlit/secrets.toml` 파일에 실제 Gemini API 키를 입력해주세요.")
+            else:
+                with st.spinner("문제를 생성 중입니다..."):
+                    result = engine.generate_question(region, topic)
+                    if result.startswith("❌") or result.startswith("⚠️"):
+                        st.error(result)
+                    else:
+                        st.session_state.question = result
+                        st.session_state.evaluation = None
         else:
             st.error("먼저 API 키를 입력해주세요.")
 
@@ -89,7 +97,11 @@ with col2:
             # 음성 데이터가 있는 경우 (간이 처리: 실제 구현 시 bytes 전달 필요)
             # 여기서는 텍스트 우선, 음성 지원 안내만 포함
             with st.spinner("AI가 답변을 분석 중입니다..."):
-                st.session_state.evaluation = engine.evaluate_answer(st.session_state.question, target_answer)
+                result = engine.evaluate_answer(st.session_state.question, target_answer)
+                if result.startswith("❌") or result.startswith("⚠️"):
+                    st.error(result)
+                else:
+                    st.session_state.evaluation = result
 
 # 결과 대시보드
 if st.session_state.evaluation:
