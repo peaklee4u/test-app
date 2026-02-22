@@ -31,7 +31,13 @@ with st.sidebar:
         st.info("`.streamlit/secrets.toml` 파일이나 Streamlit Cloud의 Secrets 설정에 `GEMINI_API_KEY`를 추가해주세요.")
         engine = None
 
-    st.divider()
+    region = st.selectbox("지원 지역", ["서울", "경기"])
+    topic = st.selectbox("핵심 주제", [
+        "공동체형 인성", 
+        "AI·디지털 리터러시", 
+        "학생 마음건강",
+        "수업 설계 및 교육과정",
+        "생활지도 및 상담"
     ])
 
     st.divider()
